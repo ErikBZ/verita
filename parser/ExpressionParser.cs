@@ -11,11 +11,93 @@ namespace Verita.Parser
         // & for and
         // ^ for xor
         // | for or
+        private static char[] operators = {'(', ')', '|', '&', '^', ' '};
+       
         public static Expression Parse(string exp)
         {
+            // set up stacks
+            Stack<char> opts = new Stack<char>();
+            Stack<string> vars = new Stack<string>();
+            Stack<Expression> expres = new Stack<Expression>();
+
+            // getting the stacks to use
+            string[] variables = GetVariableNames(exp);
+            vars = GetVarStack(variables);
+
+            char[] operations = GetOperators(exp);
+            opts = GetOperatorStack(operations);
+
+            expres.Push(null);
+
+            // whlie we still have operations to use
+            while(opts.Count > 0)
+            {
+                char opt = opts.Pop();
+
+                if(opt != '(' && opt != ')')
+                // opt is actually an operator
+                // later on i will need to implement Not
+                {
+                }
+                // opening a paren
+                else if(opt != '(')
+                {
+                }
+                // this will be for close paren
+                else
+                {
+                }
+            }
+
             return null;
         }
 
+        // fuck this i can just use regex
+        private static string[] GetVariableNames(string exp)
+        {
+            string[] tokens = exp.Split(operators, StringSplitOptions.RemoveEmptyEntries);
+            return tokens;
+        }
+
+        private static Stack<string> GetVarStack(string[] vars)
+        {
+            Stack<string> stk = new Stack<string>();
+            
+            for(int i=vars.Length-1; i>-1; i--)
+            {
+                stk.Push(vars[i]);
+            }
+
+            return stk;
+        }
+
+        private static char[] GetOperators(string exp)
+        {
+            List<char> list = new List<char>();
+            for(int i=0; i<exp.Length;i++)
+            {
+                char c = exp[i];
+                if(IsOperator(c))
+                {
+                    list.Add(c);
+                }
+            }
+
+            return list.ToArray();
+        }
+
+        private static Stack<char> GetOperatorStack(char[] opts)
+        {
+            Stack<char> stk = new Stack<char>();
+
+            for(int i=opts.Length-1; i > -1; i--)
+            {
+                stk.Push(opts[i]);                
+            }
+
+            return stk;
+        }
+        
         // making sure the string is well formated
         public static bool Preprocess(string exp)
         {

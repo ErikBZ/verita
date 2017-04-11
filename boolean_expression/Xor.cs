@@ -4,5 +4,8 @@ namespace Verita.BooleanExpression
 {
     public class Xor:Expression
     {
+        public Xor():base()
+        {
+        }
     } 
 }

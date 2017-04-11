@@ -6,7 +6,13 @@ namespace Verita
 {
     public class Program
     {
+        private static char[] operators = {'(', ')', '|', '&', '^'};
         public static void Main(string[] args)
+        {
+            RunProg();
+        }
+
+        public static void RunProg()
         {
             // doing some testing
             string input = string.Empty;
@@ -14,7 +20,14 @@ namespace Verita
             {
                 input = Console.ReadLine();
                 bool stringGood = ExpressionParser.Preprocess(input);
-                Console.WriteLine(stringGood);
+                if(stringGood)
+                {
+                    ExpressionParser.Parse(input);
+                }
+                else
+                {
+                    Console.WriteLine("This is not formatted correctly.");
+                }
             }
         }
     }
