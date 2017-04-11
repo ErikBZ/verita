@@ -28,6 +28,7 @@ namespace Verita.Parser
             opts = GetOperatorStack(operations);
 
             expres.Push(null);
+            Expression expression = null;
 
             // whlie we still have operations to use
             while(opts.Count > 0)
@@ -38,20 +39,68 @@ namespace Verita.Parser
                 // opt is actually an operator
                 // later on i will need to implement Not
                 {
+                    if(expression == null)
+                    {
+                        expression = GetOperationExpression(opt);
+                    }
+                    
+                    expression.Add(vars.Pop());
+                    // shortcircuiting so that i dont check an empty stack
+                    if((opts.Count == 0 && vars.Count > 0) || (opts.Count > 0 && opts.Peek() == ')'))
+                    {
+                        //TODO errors here when there is something like (x|y)&z
+                        expression.Add(vars.Pop());
+                    }
                 }
                 // opening a paren
-                else if(opt != '(')
+                // push paren here, push null if it directly follows another open paren
+                else if(opt == '(')
                 {
+                    expres.Push(expression);
+                    expression = null;
                 }
                 // this will be for close paren
                 else
                 {
+                    // close paren, pop expres
+                    Expression temp;
+                    do{
+                        // TODO error here when there are more than 1 paren paris (())
+                        temp = expres.Pop();
+                        // only need to check for this because
+                        // )( is not allowed and the preprocessor checks for it
+                        if((opts.Count > 0 && opts.Peek() != ')') && temp == null)
+                        {
+                            // make sure i don't have to pop it here
+                            temp = GetOperationExpression(opts.Peek());
+                        }
+                        
+                        if(temp != null)
+                        {
+                            temp.Add(expression);
+                            expression = temp;
+                        }
+                    }while(temp == null && expres.Count > 0);
                 }
             }
 
-            return null;
+            return expression;
         }
 
+        private static Expression GetOperationExpression(char c)
+        {
+            switch(c)
+            {
+                case '&':
+                    return new And();
+                case '|':
+                    return new Or();
+                case '^':
+                    return new Xor();
+                default:
+                    return new Expression();
+            }
+        }
         // fuck this i can just use regex
         private static string[] GetVariableNames(string exp)
         {

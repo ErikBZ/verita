@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 namespace Verita.BooleanExpression
 {
@@ -6,6 +7,7 @@ namespace Verita.BooleanExpression
     {
         public And():base()
         {
+            _operation = '&';
         }
     } 
 }

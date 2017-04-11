@@ -10,8 +10,27 @@ namespace Verita
         public static void Main(string[] args)
         {
             RunProg();
+
+            //CheckToString();
         }
 
+        // looks like two string works!
+        public static void CheckToString()
+        {
+            Expression x = new Expression("x");
+            Expression y = new Expression("y");
+            Expression z = new Expression("z");
+
+            And a = new And();
+            a.Add(x);
+            a.Add(y);
+
+            Or o = new Or();
+            o.Add(a);
+            o.Add(z);
+
+            Console.WriteLine(o.ToString());
+        }
         public static void RunProg()
         {
             // doing some testing
@@ -22,7 +41,8 @@ namespace Verita
                 bool stringGood = ExpressionParser.Preprocess(input);
                 if(stringGood)
                 {
-                    ExpressionParser.Parse(input);
+                    Expression e = ExpressionParser.Parse(input);
+                    Console.WriteLine("This is how i parsed it: " +  e.ToString());
                 }
                 else
                 {

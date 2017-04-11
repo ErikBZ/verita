@@ -6,6 +6,7 @@ namespace Verita.BooleanExpression
     {
         public Xor():base()
         {
+            _operation='^';
         }
     } 
 }
