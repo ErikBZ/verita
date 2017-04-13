@@ -13,7 +13,7 @@ namespace Verita.Parser
         // | for or
         private static char[] operators = {'(', ')', '|', '&', '^', ' '};
        
-        public static Expression Parse(string exp)
+        public static Expression Parse(string exp, out string[] parsedVariables)
         {
             // set up stacks
             Stack<char> opts = new Stack<char>();
@@ -22,6 +22,8 @@ namespace Verita.Parser
 
             // getting the stacks to use
             string[] variables = GetVariableNames(exp);
+            parsedVariables = variables;
+
             vars = GetVarStack(variables);
 
             char[] operations = GetOperators(exp);
