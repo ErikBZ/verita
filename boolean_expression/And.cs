@@ -1,5 +1,5 @@
 using System;
-using System.Text;
+using System.Collections.Generic;
 
 namespace Verita.BooleanExpression
 {
@@ -8,6 +8,21 @@ namespace Verita.BooleanExpression
         public And():base()
         {
             _operation = '&';
+        }
+
+        public override bool Evaluate(Dictionary<string, bool> dict)
+        {
+            bool evaluation = true;
+            int i=0;
+
+            while(evaluation && i<subExpressions.Count)
+            {
+                bool eval = subExpressions[i].Evaluate(dict);
+                evaluation = evaluation && eval;
+                i++;
+            }
+
+            return evaluation;
         }
     } 
 }

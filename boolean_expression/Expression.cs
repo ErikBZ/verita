@@ -40,7 +40,15 @@ namespace Verita.BooleanExpression
 
         public virtual bool Evaluate(Dictionary<string, bool> variables)
         {
-            return variables[variable];
+            if(Singleton)
+            {
+                return variables[variable];
+            }
+            // this is actually an error
+            else
+            {
+                return false;
+            }
         }
 
         // an uninherited expression should never be the highest level expression
